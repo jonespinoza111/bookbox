@@ -1,0 +1,25 @@
+type Book @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  title: String!
+  authors: [String]
+  description: String!
+  categories: [String]
+  thumbnail: String!
+}
+
+type List @model {
+  id: ID!
+  name: String!
+  userId: String!
+  books: [Book!]! @hasMany
+}
+
+type Query {
+  searchBooks(query: String!): [Book!]!
+  getList(id: ID!): List
+}
+
+type Mutation {
+  createList(name: String!): List!
+  BookToList(listId: ID!, bookId: ID!): List!
+}

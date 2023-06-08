@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "bookbox",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authbookbox288c3306",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
