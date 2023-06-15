@@ -52,7 +52,7 @@ type EagerList = {
   readonly id: string;
   readonly name: string;
   readonly userId: string;
-  readonly books: Book[];
+  readonly books: (Book | null)[];
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { createList } from '../utility';
 
-const CreateListForm = () => {
+const CreateListForm = ({ updateLists }) => {
     const [name, setName] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('creating the new list');
-    createList(name);
+    createList(name, updateLists);
     setName('');
   };
   return (

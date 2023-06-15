@@ -7,11 +7,11 @@ type Book @model @auth(rules: [{ allow: owner }]) {
   thumbnail: String!
 }
 
-type List @model {
+type List @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String!
   userId: String!
-  books: [Book!]! @hasMany
+  books: [Book]! @hasMany
 }
 
 type Query {
