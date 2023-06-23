@@ -1,5 +1,5 @@
 type Book @model @auth(rules: [{ allow: owner }]) {
-  id: ID!
+  bookId: String!
   title: String!
   authors: [String]
   description: String!

@@ -50,8 +50,9 @@ const BookDetails = () => {
     if (selectedList) {
 
       console.log('trying to add to list', selectedList);
+      console.log('tttt id ', book.id);
       const bookData = {
-        id: book.id,
+        bookId: book.id,
         title: book.title,
         authors: [book.author],
         description: book.description,

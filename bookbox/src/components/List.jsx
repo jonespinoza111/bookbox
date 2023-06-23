@@ -16,7 +16,7 @@ const List = ({ list, updateLists }) => {
         <h3 className='text-white'>{list.name}</h3>
         <div className='books-container flex flex-row justify-start items-center flex-wrap gap-y-3 gap-x-4 my-4 w-[100%]'>
             {list.books && list.books.slice(0, 5).map(book => (
-            <Book key={book.id} title={book.title} author={book.authors} thumbnail={book.thumbnail} />
+            <Book key={book.bookId} id={book.bookId} title={book.title} author={book.authors} thumbnail={book.thumbnail} />
             ))}
             {list.books && list.books.length < 1 && (
                 <div className="w-[100%] flex justify-start items-center">

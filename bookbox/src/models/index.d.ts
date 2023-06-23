@@ -12,6 +12,7 @@ type EagerBook = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly bookId: string;
   readonly title: string;
   readonly authors?: (string | null)[] | null;
   readonly description: string;
@@ -28,6 +29,7 @@ type LazyBook = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly bookId: string;
   readonly title: string;
   readonly authors?: (string | null)[] | null;
   readonly description: string;

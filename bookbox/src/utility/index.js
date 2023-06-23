@@ -11,13 +11,12 @@ export const Category = {
   FANTASY: "Fantasy"
 }
 
-
 export async function fetchBookData(id) {
     const response = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}?key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU`);
     const data = await response.json();
     console.log('here here data ', data);
     const bookData = {
-      id: data.id,
+      bookId: data.id,
       title: data.volumeInfo.title,
       authors: data.volumeInfo.authors,
       description: data.volumeInfo.description,
@@ -57,7 +56,7 @@ export async function getLists() {
 }
 
 export async function addBookToList(listId, bookInfo) {
-    await DataStore.save(new Book({ ...bookInfo, listBooksId: listId }));
+  await DataStore.save(new Book({ ...bookInfo, listBooksId: listId }));
 }
 
 export async function deleteList(listId, cb) {
@@ -81,4 +80,31 @@ export async function handleSearch(query, page = 1) {
 
   console.log('how about these books today ..', books);
   return books;
+}
+
+export const getHomeBooksToDisplay = async () => {
+  const genrePath = 'https://www.googleapis.com/books/v1/volumes?q=subject:fiction&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU';
+  const relevancePath = 'https://www.googleapis.com/books/v1/volumes?q=*&orderBy=relevance&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU';
+  const newestPath = 'https://www.googleapis.com/books/v1/volumes?q=subject:fiction&orderBy=newest&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU';
+
+  const fetchGenreBooks = fetch(genrePath).then(response => response.json());
+  const fetchRelevanceBooks = fetch(relevancePath).then(response => response.json());
+  const fetchNewBooks = fetch(newestPath).then(response => response.json());
+
+  return await Promise.all([fetchGenreBooks, fetchRelevanceBooks, fetchNewBooks])
+  .then(([genreBooks, relevanceBooks, newBooks]) => {
+    // Combine the results and process them
+    const combinedBooks = {
+      genreBooks: genreBooks.items,
+      relevanceBooks: relevanceBooks.items,
+      newBooks: newBooks.items
+    };
+
+    console.log('these are the combined outputs of boooks', combinedBooks);
+    return combinedBooks;
+
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 }
