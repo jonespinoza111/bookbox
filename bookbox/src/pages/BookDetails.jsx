@@ -74,67 +74,69 @@ const BookDetails = () => {
       {!isLoading && book && (
         <>
           <div className="flex flex-col md:flex-row gap-8">
-            <img src={book.thumbnail} alt={book.title} className="w-full md:w-1/3 rounded-md shadow-md" />
+            <img src={book.thumbnail} alt={book.title} className="w-full md:w-[26em] rounded-md shadow-md h-[30em] object-contain" />
             <div className="flex-1">
-              <h1 className="text-3xl font-bold mb-4">{book.title}</h1>
-              <p className="text-gray-700 mb-2">
-                <span className="font-bold">Author:</span> {book.author}
+              <h1 className="text-3xl font-bold mb-4 text-white">{book.title}</h1>
+              <p className="text-gray-400 mb-2">
+                <span className="font-bold text-white">Author:</span> {book.author}
               </p>
-              <p className="text-gray-700 mb-2">
-                <span className="font-bold">Publisher:</span> {book.publisher}
+              <p className="text-gray-400 mb-2">
+                <span className="font-bold text-white">Publisher:</span> {book.publisher}
               </p>
-              <p className="text-gray-700 mb-2">
-                <span className="font-bold">Published Date:</span> {book.publishedDate}
+              <p className="text-gray-400 mb-2">
+                <span className="font-bold text-white">Published Date:</span> {book.publishedDate}
               </p>
-              <p className="text-gray-700 mb-2">
-                <span className="font-bold">Page Count:</span> {book.pageCount}
+              <p className="text-gray-400 mb-2">
+                <span className="font-bold text-white">Page Count:</span> {book.pageCount}
               </p>
-              <p className="text-gray-700 mb-2">
-                <span className="font-bold">Categories:</span> {book.categories.join(', ')}
+              <p className="text-gray-400 mb-2">
+                <span className="font-bold text-white">Categories:</span> {book.categories.splice(0,2).join(', ')}
               </p>
-              <p className="text-gray-700 mb-2">
-                <span className="font-bold">Language:</span> {book.language}
+              <p className="text-gray-400 mb-2">
+                <span className="font-bold text-white">Language:</span> {book.language}
               </p>
-              <p className="text-gray-700 mb-2">
-                <span className="font-bold">Average Rating:</span> {book.averageRating}
+              <p className="text-gray-400 mb-2">
+                <span className="font-bold text-white">Average Rating:</span> {book.averageRating}
               </p>
-              <p className="text-gray-700 mb-2">
-                <span className="font-bold">Ratings Count:</span> {book.ratingsCount}
+              <p className="text-gray-400 mb-2">
+                <span className="font-bold text-white">Ratings Count:</span> {book.ratingsCount}
               </p>
-              <p className="text-gray-700 mb-4">{book.description}</p>
+              <p className="text-gray-400 mb-4">{book.description}</p>
               <a href={book.previewLink} target="_blank" rel="noreferrer" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md">
                 Preview Book
               </a>
-
-              {lists.length > 0 && (
-                <div className="mt-4">
-                  <label htmlFor="lists" className="block font-bold mb-2">
-                    Add to List:
-                  </label>
-                  <select
-                    id="lists"
-                    className="border border-gray-300 rounded-md p-2 w-full"
-                    value={selectedList || ''}
-                    onChange={(e) => setSelectedList(e.target.value)}
-                  >
-                    <option value="">Select a list</option>
-                    {lists.map((list) => (
-                      <option key={list.id} value={list.id}>
-                        {list.name}
-                      </option>
-                    ))}
-                  </select>
-                  <button
-                    onClick={handleAddToList}
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md mt-2"
-                    disabled={!selectedList}
-                  >
-                    Add to List
-                  </button>
-                </div>
-              )}
             </div>
           </div>
+          {lists.length > 0 && (
+                <div className="mt-4">
+                  <label htmlFor="lists" className="block font-bold mb-2 text-white">
+                    Add to List:
+                  </label>
+                  <div className="flex flex-col">
+
+                    <select
+                      id="lists"
+                      className="border border-gray-300 rounded-md p-2 w-[25%]"
+                      value={selectedList || ''}
+                      onChange={(e) => setSelectedList(e.target.value)}
+                    >
+                      <option value="">Select a list</option>
+                      {lists.map((list) => (
+                        <option key={list.id} value={list.id}>
+                          {list.name}
+                        </option>
+                      ))}
+                    </select>
+                    <button
+                      onClick={handleAddToList}
+                      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md mt-2 w-[25%]"
+                      disabled={!selectedList}
+                    >
+                      Add to List
+                    </button>
+                  </div>
+                </div>
+              )}
         </>
       )}
     </div>

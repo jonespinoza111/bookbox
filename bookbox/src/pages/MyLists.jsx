@@ -17,10 +17,11 @@ const MyLists = () => {
     }, []);
 
   return (
-    <div>
+    <div className="mx-10 my-5">
+        <CreateListForm updateLists={updateLists} />
         <div className=''>
           <h2 className='text-white'>My Lists</h2>
-          <div>
+          <div className="flex flex-row flex-wrap gap-x-5">
             {lists.length > 0 && lists.map(list => {
               return (
                 <List key={list.id} list={list} updateLists={updateLists} />
@@ -28,7 +29,6 @@ const MyLists = () => {
             })}
           </div>
         </div>
-        <CreateListForm updateLists={updateLists} />
     </div>
   )
 }

@@ -12,7 +12,7 @@ const List = ({ list, updateLists }) => {
     deleteList(list.id, updateLists);
    };
   return (
-    <div key={list.id} className='flex justify-center items-start w-[47em] pt-2 flex-col mx-10 my-5 bg-black border-2 border-white px-5'>
+    <div key={list.id} className='flex justify-center items-start w-[40em] pt-2 flex-col my-5 bg-black border-2 border-white px-5'>
         <h3 className='text-white'>{list.name}</h3>
         <div className='books-container flex flex-row justify-start items-center flex-wrap gap-y-3 gap-x-4 my-4 w-[100%]'>
             {list.books && list.books.slice(0, 5).map(book => (
