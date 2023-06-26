@@ -1,6 +1,6 @@
 
 import { Auth, DataStore } from "aws-amplify";
-import { Book, List } from '../models';
+import { Book, List, Review } from '../models';
 
 export const Category = {
   FICTION: "Fiction",
@@ -56,13 +56,28 @@ export async function getLists() {
 }
 
 export async function addBookToList(listId, bookInfo) {
-  await DataStore.save(new Book({ ...bookInfo, listBooksId: listId }));
+  return await DataStore.save(new Book({ ...bookInfo, listBooksId: listId }));
 }
 
 export async function deleteList(listId, cb) {
   const listToDelete = await DataStore.query(List, listId);
   DataStore.delete(listToDelete);
   cb();
+}
+
+export async function createReview(reviewInfo) {
+  const user = await Auth.currentAuthenticatedUser();
+
+  await DataStore.save(new Review({
+    author: user.attributes.sub,
+    ...reviewInfo
+  }))
+}
+
+export async function getReviews(bookId) {
+  const reviews = await DataStore.query(Review, (review) => review.bookId.eq(bookId));
+  console.log('my reviews ', reviews);
+  return reviews.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
 export async function handleSearch(query, page = 1) {

@@ -77,3 +77,37 @@ export declare type List = LazyLoading extends LazyLoadingDisabled ? EagerList :
 export declare const List: (new (init: ModelInit<List>) => List) & {
   copyOf(source: List, mutator: (draft: MutableModel<List>) => MutableModel<List> | void): List;
 }
+
+type EagerReview = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Review, 'id'>;
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly content: string;
+  readonly rating: number;
+  readonly createdAt: string;
+  readonly updatedAt: string;
+  readonly author: string;
+  readonly bookId: string;
+}
+
+type LazyReview = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Review, 'id'>;
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly content: string;
+  readonly rating: number;
+  readonly createdAt: string;
+  readonly updatedAt: string;
+  readonly author: string;
+  readonly bookId: string;
+}
+
+export declare type Review = LazyLoading extends LazyLoadingDisabled ? EagerReview : LazyReview
+
+export declare const Review: (new (init: ModelInit<Review>) => Review) & {
+  copyOf(source: Review, mutator: (draft: MutableModel<Review>) => MutableModel<Review> | void): Review;
+}

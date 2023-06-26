@@ -14,6 +14,18 @@ type List @model @auth(rules: [{ allow: owner }]) {
   books: [Book]! @hasMany
 }
 
+type Review @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  name: String!
+  content: String!
+  rating: Float!
+  createdAt: String!
+  updatedAt: String!
+  author: String!
+  bookId: String!
+}
+
+
 type Query {
   searchBooks(query: String!): [Book!]!
   getList(id: ID!): List

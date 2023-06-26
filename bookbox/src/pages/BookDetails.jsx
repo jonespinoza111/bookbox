@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { addBookToList, getLists } from "../utility";
+import { addBookToList, getLists, getReviews } from "../utility";
+import ReviewForm from "../components/ReviewForm";
+import Review from "../components/Review";
 
 
 const BookDetails = () => {
@@ -10,6 +12,8 @@ const BookDetails = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [lists, setLists] = useState([]);
   const [selectedList, setSelectedList] = useState(null);
+
+  const [reviews, setReviews] = useState(null);
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -44,6 +48,16 @@ const BookDetails = () => {
     };
     fetchLists();
   }, []);
+
+  const fetchReviews = useCallback(async () => {
+    let reviewData = await getReviews(id);
+    console.log('all this reviewData, ', reviewData);
+    setReviews([...reviewData]);
+  }, [id]);
+
+  useEffect(() => {
+    fetchReviews();
+  }, [fetchReviews]);
 
 
   const handleAddToList = async () => {
@@ -107,6 +121,8 @@ const BookDetails = () => {
               </a>
             </div>
           </div>
+          <div className="w-full my-10">
+
           {lists.length > 0 && (
                 <div className="mt-4">
                   <label htmlFor="lists" className="block font-bold mb-2 text-white">
@@ -137,6 +153,14 @@ const BookDetails = () => {
                   </div>
                 </div>
               )}
+          </div>
+              <ReviewForm bookId={id} fetchReviews={fetchReviews} />
+              <div className="reviews flex flex-col bg-white">
+                {reviews && reviews.map((review) => (
+                  <Review key={review.id} review={review} />
+                ))}
+              </div>
+
         </>
       )}
     </div>
