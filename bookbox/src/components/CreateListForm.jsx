@@ -1,17 +1,25 @@
 import { useState } from 'react'
 import { createList } from '../utility';
+import { openToastifyMessage } from './ToastifyMessage';
 
 const CreateListForm = ({ updateLists }) => {
     const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('creating the new list');
-    createList(name, updateLists);
+    const list = await createList(name, description, updateLists);
+    if (list.success) {
+      openToastifyMessage('success', list.message)
+    } else if (!list.success) {
+      openToastifyMessage('error', list.error);
+    }
     setName('');
+    setDescription('');
   };
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-5 my-10 max-w-md w-full h-[10em] mx-auto">
+    <form onSubmit={handleSubmit} className="bg-white p-5 my-10 max-w-md w-full h-[16em] mx-auto">
       <div className="mb-4">
         <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
           Name
@@ -23,6 +31,20 @@ const CreateListForm = ({ updateLists }) => {
           onChange={(event) => setName(event.target.value)}
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           placeholder="Enter list name"
+          required
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
+          Description
+        </label>
+        <input
+          type="text"
+          id="description"
+          value={description}
+          onChange={(event) => setDescription(event.target.value)}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="Enter list description"
           required
         />
       </div>

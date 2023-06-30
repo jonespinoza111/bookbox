@@ -26,6 +26,9 @@ const MyLists = () => {
                 <List key={list.id} list={list} updateLists={updateLists} />
               )
             })}
+            {lists.length <= 0 && (
+              <span className="text-gray-400 mt-4">No lists. Create one now!</span>
+            )}
           </div>
         </div>
         <CreateListForm updateLists={updateLists} />

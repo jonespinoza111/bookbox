@@ -53,6 +53,7 @@ type EagerList = {
   };
   readonly id: string;
   readonly name: string;
+  readonly description: string;
   readonly userId: string;
   readonly books: (Book | null)[];
   readonly createdAt?: string | null;
@@ -66,6 +67,7 @@ type LazyList = {
   };
   readonly id: string;
   readonly name: string;
+  readonly description: string;
   readonly userId: string;
   readonly books: AsyncCollection<Book>;
   readonly createdAt?: string | null;

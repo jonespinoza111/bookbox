@@ -5,6 +5,7 @@ import { addBookToList, getLists, getReviews } from "../utility";
 import ReviewForm from "../components/ReviewForm";
 import Review from "../components/Review";
 import BookDescription from "../components/BookDescription";
+import { openToastifyMessage } from "../components/ToastifyMessage";
 
 
 const BookDetails = () => {
@@ -28,7 +29,7 @@ const BookDetails = () => {
         author: data.volumeInfo.authors?.[0] || 'Unknown',
         description: data.volumeInfo.description || 'No description available.',
         smallThumbnail: data.volumeInfo.imageLinks?.thumbnail || 'https://via.placeholder.com/128x192.png?text=No+Image',
-        mediumThumbnail: data.volumeInfo.imageLinks?.medium || 'https://via.placeholder.com/128x192.png?text=No+Image',
+        mediumThumbnail: data.volumeInfo.imageLinks?.medium,
         pageCount: data.volumeInfo.pageCount || 'Unknown',
         publisher: data.volumeInfo.publisher || 'Unknown',
         publishedDate: data.volumeInfo.publishedDate || 'Unknown',
@@ -76,7 +77,13 @@ const BookDetails = () => {
         categories: book.categories,
         thumbnail: book.smallThumbnail,
       };
-      await addBookToList(selectedList, bookData);
+      const addedBook = await addBookToList(selectedList, bookData);
+
+      if (addedBook.success) {
+        openToastifyMessage("success", addedBook.message);
+    } else if (!addedBook.success) {
+        openToastifyMessage("error", addedBook.error);
+    }
       setSelectedList(null);
     }
   };

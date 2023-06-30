@@ -10,6 +10,7 @@ type Book @model @auth(rules: [{ allow: owner }]) {
 type List @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String!
+  description: String!
   userId: String!
   books: [Book]! @hasMany
 }
