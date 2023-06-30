@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { addBookToList, getLists, getReviews } from "../utility";
 import ReviewForm from "../components/ReviewForm";
 import Review from "../components/Review";
+import BookDescription from "../components/BookDescription";
 
 
 const BookDetails = () => {
@@ -20,12 +21,14 @@ const BookDetails = () => {
       setIsLoading(true);
       const response = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}`);
       const data = await response.json();
+      console.log('data data ', data);
       const bookData = {
         id: data.id,
         title: data.volumeInfo.title,
         author: data.volumeInfo.authors?.[0] || 'Unknown',
         description: data.volumeInfo.description || 'No description available.',
-        thumbnail: data.volumeInfo.imageLinks?.thumbnail || 'https://via.placeholder.com/128x192.png?text=No+Image',
+        smallThumbnail: data.volumeInfo.imageLinks?.thumbnail || 'https://via.placeholder.com/128x192.png?text=No+Image',
+        mediumThumbnail: data.volumeInfo.imageLinks?.medium || 'https://via.placeholder.com/128x192.png?text=No+Image',
         pageCount: data.volumeInfo.pageCount || 'Unknown',
         publisher: data.volumeInfo.publisher || 'Unknown',
         publishedDate: data.volumeInfo.publishedDate || 'Unknown',
@@ -71,7 +74,7 @@ const BookDetails = () => {
         authors: [book.author],
         description: book.description,
         categories: book.categories,
-        thumbnail: book.thumbnail,
+        thumbnail: book.smallThumbnail,
       };
       await addBookToList(selectedList, bookData);
       setSelectedList(null);
@@ -88,7 +91,7 @@ const BookDetails = () => {
       {!isLoading && book && (
         <>
           <div className="flex flex-col md:flex-row gap-8">
-            <img src={book.thumbnail} alt={book.title} className="w-full md:w-[26em] rounded-md shadow-md h-[30em] object-contain" />
+            <img src={book.mediumThumbnail || book.smallThumbnail} alt={book.title} className="w-full md:w-[310px] rounded-md shadow-md h-[465px] object-cover" />
             <div className="flex-1">
               <h1 className="text-3xl font-bold mb-4 text-white">{book.title}</h1>
               <p className="text-gray-400 mb-2">
@@ -104,7 +107,7 @@ const BookDetails = () => {
                 <span className="font-bold text-white">Page Count:</span> {book.pageCount}
               </p>
               <p className="text-gray-400 mb-2">
-                <span className="font-bold text-white">Categories:</span> {book.categories.splice(0,2).join(', ')}
+                <span className="font-bold text-white">Categories:</span> {book.categories.join(', ')}
               </p>
               <p className="text-gray-400 mb-2">
                 <span className="font-bold text-white">Language:</span> {book.language}
@@ -112,14 +115,16 @@ const BookDetails = () => {
               <p className="text-gray-400 mb-2">
                 <span className="font-bold text-white">Average Rating:</span> {book.averageRating}
               </p>
-              <p className="text-gray-400 mb-2">
+              <p className="text-gray-400 mb-6">
                 <span className="font-bold text-white">Ratings Count:</span> {book.ratingsCount}
               </p>
-              <p className="text-gray-400 mb-4">{book.description}</p>
               <a href={book.previewLink} target="_blank" rel="noreferrer" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md">
                 Preview Book
               </a>
             </div>
+          </div>
+          <div className="w-full my-10">
+            <BookDescription description={book.description} />
           </div>
           <div className="w-full my-10">
 

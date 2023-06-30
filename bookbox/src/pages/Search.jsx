@@ -1,42 +1,38 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import SearchBar from '../components/SearchBar';
-import SearchResults from '../components/SearchResults';
 import { handleSearch } from '../utility';
+import Results from '../components/Results';
+import { useFetchContext } from '../context/fetchContext';
 
 const Search = () => {
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+
+    const { results, isLoading, resetResults, handleFetch } = useFetchContext()
+
+    useEffect(() => {
+      resetResults();
+
+      return () => {
+        resetResults()
+      }
+    }, [])
     
     const onHandleSearch = async (event) => {
       if (event) {
         event.preventDefault();
       }
-        setIsLoading(true);
-        const books = await handleSearch(query);
-        setResults([...books]);
-        setIsLoading(false);
+      handleFetch(handleSearch, query);
     };
 
-    const onHandleSearchMore = async (event, page) => {
-      if (event) {
-        event.preventDefault(); 
-      }
-      setIsLoading(true);
-      const books = await handleSearch(query, page);
-      
-      console.log('books already here ', results);
-      console.log('books Im going to add ', books);
-      setResults((prevResults) => [...prevResults, ...books]);
-      setIsLoading(false);
-    }
-
+    const onHandleSearchMore = async (page) => {
+      handleFetch(handleSearch, query, page);
+    };
     console.log('all the results', results);
 
   return (
     <div>
       <SearchBar setQuery={setQuery} query={query} onHandleSearch={onHandleSearch} />
-      <SearchResults results={results} onLoadMore={(e, page) => onHandleSearchMore(e,  page)} isLoading={isLoading} />
+      <Results results={results} onLoadMore={onHandleSearchMore} isLoading={isLoading} title={`Search Results: `} search={true} />
     </div>
   )
 }

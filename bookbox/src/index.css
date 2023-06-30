@@ -4,3 +4,7 @@
   width: 100%;
   min-height: 100vh;
 }
+
+.page {
+  padding: 1em 2.5em;
+}

@@ -56,6 +56,15 @@ export async function getLists() {
 }
 
 export async function addBookToList(listId, bookInfo) {
+  const existingList = await DataStore.query(List, listId);
+
+  let listBooks = existingList && await existingList.books.toArray();
+  const isBookAlreadyAdded = listBooks.some(book => book.bookId === bookInfo.bookId);
+  
+  if (isBookAlreadyAdded) {
+    throw new Error('Book already exists in the list.');
+  }
+  
   return await DataStore.save(new Book({ ...bookInfo, listBooksId: listId }));
 }
 
@@ -101,13 +110,22 @@ export const getHomeBooksToDisplay = async () => {
   const genrePath = 'https://www.googleapis.com/books/v1/volumes?q=subject:fiction&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU';
   const relevancePath = 'https://www.googleapis.com/books/v1/volumes?q=*&orderBy=relevance&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU';
   const newestPath = 'https://www.googleapis.com/books/v1/volumes?q=subject:fiction&orderBy=newest&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU';
+  // const categoriesPath = 'https://www.googleapis.com/books/v1/volumes?q=subject:horror&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU';
 
   const fetchGenreBooks = fetch(genrePath).then(response => response.json());
   const fetchRelevanceBooks = fetch(relevancePath).then(response => response.json());
   const fetchNewBooks = fetch(newestPath).then(response => response.json());
+  // const fetchCategories = fetch(categoriesPath).then(response => response.json());
 
   return await Promise.all([fetchGenreBooks, fetchRelevanceBooks, fetchNewBooks])
   .then(([genreBooks, relevanceBooks, newBooks]) => {
+
+
+    // const allCategories = categories.items.map(item => ({
+    //   id: item.id,
+    //   name: item.volumeInfo.title,
+    //   thumbnail: item.volumeInfo.imageLinks?.thumbnail || 'N/A',
+    // }));
     // Combine the results and process them
     const combinedBooks = {
       genreBooks: genreBooks.items,
@@ -122,4 +140,15 @@ export const getHomeBooksToDisplay = async () => {
   .catch(error => {
     console.error('Error:', error);
   });
+}
+
+export async function getCategoryBooks(category, page = 1) {
+
+  console.log('what is my start index ', page);
+
+  const categoriesPath = `https://www.googleapis.com/books/v1/volumes?q=subject:${encodeURIComponent(category)}&startIndex=${(page - 1) * 10}&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU`;
+  const categoryBooks = await fetch(categoriesPath).then(response => response.json());
+
+  console.log('Many category books ', categoryBooks);
+  return categoryBooks.items
 }
