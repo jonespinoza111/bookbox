@@ -1,4 +1,4 @@
-import { Auth, DataStore } from "aws-amplify";
+import { Auth, DataStore, Predicates } from "aws-amplify";
 import { Book, List, Review } from "../models";
 
 export const Category = {
@@ -14,22 +14,42 @@ export async function fetchBookData(id) {
   const response = await fetch(
     `https://www.googleapis.com/books/v1/volumes/${id}?key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU`
   );
+
+  // const relatedBooks = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}/related?key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU`);
+
   const data = await response.json();
-  console.log("here here data ", data);
+  console.log('Related books : ', data);
+  // const bookData = {
+  //   bookId: data.id,
+  //   title: data.volumeInfo.title,
+  //   authors: data.volumeInfo.authors,
+  //   description: data.volumeInfo.description,
+  //   categories: data.volumeInfo.categories?.map(
+  //     (category) => Category[category.toUpperCase()]
+  //   ),
+  //   thumbnail: data.volumeInfo.imageLinks?.thumbnail,
+  // };
+
   const bookData = {
     bookId: data.id,
     title: data.volumeInfo.title,
-    authors: data.volumeInfo.authors,
-    description: data.volumeInfo.description,
-    categories: data.volumeInfo.categories?.map(
-      (category) => Category[category.toUpperCase()]
-    ),
-    thumbnail: data.volumeInfo.imageLinks?.thumbnail,
+    author: data.volumeInfo.authors?.[0] || 'Unknown',
+    description: data.volumeInfo.description || 'No description available.',
+    smallThumbnail: data.volumeInfo.imageLinks?.thumbnail || 'https://via.placeholder.com/128x192.png?text=No+Image',
+    mediumThumbnail: data.volumeInfo.imageLinks?.medium,
+    pageCount: data.volumeInfo.pageCount || 'Unknown',
+    publisher: data.volumeInfo.publisher || 'Unknown',
+    publishedDate: data.volumeInfo.publishedDate || 'Unknown',
+    categories: data.volumeInfo.categories || [],
+    language: data.volumeInfo.language || 'Unknown',
+    averageRating: data.volumeInfo.averageRating || 'Unknown',
+    ratingsCount: data.volumeInfo.ratingsCount || 'Unknown',
+    previewLink: data.volumeInfo.previewLink || '',
   };
   // const query = await DataStore.query(Book);
-  const book = await DataStore.save(new Book(bookData));
-  console.log("hih hi");
-  return book;
+  // const book = await DataStore.save(new Book(bookData));
+  // console.log("hih hi");
+  return bookData;
 }
 
 export async function createList(name, description, cb) {
@@ -92,6 +112,38 @@ export async function addBookToList(listId, bookInfo) {
         message: `Book added to ${existingList.name}`,
       }
     : { success: false, error: `Could not add book to ${existingList.name}` };
+}
+
+
+export async function removeBookFromList(listId, bookIdsToRemove, cb) {
+  console.log('listId:', typeof(listId));
+  console.log('bookIdsToRemove:', bookIdsToRemove);
+
+  let booksToRemove = await DataStore.query(Book, (b) => b.listBooksId.eq(listId));
+  console.log('books with listID ', booksToRemove);
+  booksToRemove = booksToRemove.filter((b) => bookIdsToRemove.includes(b.bookId));
+  
+  console.log('books to remove: ', booksToRemove);
+
+  const booksDeleted = await Promise.all(
+    booksToRemove.map((book) => DataStore.delete(book))
+  );
+
+
+  console.log('books deleted here ', booksDeleted);
+
+  cb();
+
+  return booksDeleted ? {
+    booksDeleted,
+    success: true,
+    message: 'The books have been removed from the list!'
+  } : {
+    success: false,
+    error: 'The books could not be removed'
+  }
+
+  
 }
 
 export async function deleteList(listId, cb) {

@@ -54,6 +54,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "listBooksId": {
+                    "name": "listBooksId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -69,13 +76,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "listBooksId": {
-                    "name": "listBooksId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -299,5 +299,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.3",
-    "version": "10a462bcd0a61645a78a8b3ce0a7fbef"
+    "version": "45add828755c9ff64dfb0cc60885724f"
 };

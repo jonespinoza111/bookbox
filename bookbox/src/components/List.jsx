@@ -14,7 +14,7 @@ const List = ({ list, updateLists }) => {
     const deletedList = await deleteList(list.id, updateLists);
     if (deletedList.success) {
         openToastifyMessage("success", deletedList.message);
-    } else if (!deleteList.success) {
+    } else if (!deletedList.success) {
         openToastifyMessage("error", deletedList.error);
     }
    };

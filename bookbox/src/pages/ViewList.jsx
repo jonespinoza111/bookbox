@@ -1,24 +1,81 @@
-import { useLocation } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import Book from "../components/Book"
+import { useEffect, useState } from "react";
+import { removeBookFromList } from "../utility";
+import { useUserContext } from "../context/UserContext";
+import { openToastifyMessage } from "../components/ToastifyMessage";
 
 
 const ViewList = () => {
-    const location = useLocation();
-    const list = location.state.listData;
+    const { listId } = useParams();
+    const { lists, handleGetLists } = useUserContext();
+    
+    const list = lists && lists.find(l => l.listId === listId);
+
+    const [editMode, setEditMode] = useState(false);
+    const [selectedBooks, setSelectedBooks] = useState([]);
+
+    const handleEditList = () => {
+      setEditMode(prev => !prev);
+    };
+    
+    const handleBookSelection = (bookId) => {
+      if (selectedBooks.includes(bookId)) {
+        setSelectedBooks(selectedBooks.filter((id) => id !== bookId));
+      } else {
+        setSelectedBooks([...selectedBooks, bookId]);
+      }
+    };
+
+    const handleRemoveFromList = async () => {
+      console.log('Removing these books from the list ', selectedBooks, listId);
+      const removedBooks = await removeBookFromList(list.id, selectedBooks, handleGetLists);
+      // Update the list state with the updatedBooks array
+      // You can use a state management library or pass the updatedBooks array to a parent component to update the list state
+      if (removedBooks.success) {
+        openToastifyMessage("success", removedBooks.message);
+      } else if (!removedBooks.success) {
+          openToastifyMessage("error", removedBooks.error);
+      }
+  
+      setSelectedBooks([]);
+      setEditMode(false);
+      // Clear the selectedBooks state after removing from the list
+    };
 
     console.log('make a list ', list);
     return (
       <div className='flex justify-center items-start w-[100%] pt-2 flex-col mx-10 my-5 bg-black border- border-white px-5'>
-        <h3 className='text-white'>{list.name}</h3>
+        <h3 className='text-white'>{list && list.name}</h3>
         <div className='books-container flex flex-row justify-start items-center flex-wrap gap-y-3 gap-x-4 my-4 w-[100%]'>
-          {list.books && list.books.map(book => (
-            <Book key={book.bookId} id={book.bookId} title={book.title || 'N/A'} author={book.authors || 'N/A'} thumbnail={book.thumbnail || 'N/A'} />
+          {list && list.books && list.books.map(book => (
+            <div key={book.bookId} className="flex flex-col">
+            <Book id={book.bookId} title={book.title || 'N/A'} author={book.authors || 'N/A'} thumbnail={book.thumbnail || 'N/A'} />
+            {editMode && (
+              <input
+                className="mt-4 h-5 w-full rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
+                type='checkbox'
+                checked={selectedBooks.includes(book.bookId)}
+                onChange={() => handleBookSelection(book.bookId)}
+              />
+            )}
+            </div>
           ))}
-          {list.books && list.books.length < 1 && (
+          {list && list.books && list.books.length < 1 && (
             <div className="w-[100%] flex justify-start items-center">
               <p className="text-white">This list is very empty!</p>
             </div>
           )}
+        </div>
+        <div className="buttons-container flex flex-row">
+          {editMode && (
+            <div className="text-white">
+              <button className="bg-white text-black px-4 py-2 mr-2 hover:bg-gray-200 rounded-md mt-2" onClick={handleRemoveFromList}>Remove from list</button>
+            </div>
+          )}
+          <div className="text-white">
+            <button  className="bg-white text-black px-4 py-2 mr-2 hover:bg-gray-200 rounded-md mt-2" onClick={handleEditList}>{editMode ? 'Cancel' : 'Edit List'}</button>
+          </div>
         </div>
       </div>
     )

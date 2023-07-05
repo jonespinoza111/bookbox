@@ -5,6 +5,7 @@ type Book @model @auth(rules: [{ allow: owner }]) {
   description: String!
   categories: [String]
   thumbnail: String!
+  listBooksId: String
 }
 
 type List @model @auth(rules: [{ allow: owner }]) {

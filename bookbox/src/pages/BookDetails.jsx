@@ -1,56 +1,42 @@
 import { useCallback, useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { addBookToList, getLists, getReviews } from "../utility";
+import { addBookToList, fetchBookData, getLists, getReviews } from "../utility";
 import ReviewForm from "../components/ReviewForm";
 import Review from "../components/Review";
 import BookDescription from "../components/BookDescription";
 import { openToastifyMessage } from "../components/ToastifyMessage";
+import { useUserContext } from "../context/UserContext";
 
 
 const BookDetails = () => {
   const { id } = useParams();
   const [book, setBook] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [lists, setLists] = useState([]);
   const [selectedList, setSelectedList] = useState(null);
+
+  const { lists, handleGetLists } = useUserContext();
 
   const [reviews, setReviews] = useState(null);
 
   useEffect(() => {
     const fetchBook = async () => {
+      const myBook = await fetchBookData(id);
       setIsLoading(true);
-      const response = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}`);
-      const data = await response.json();
-      console.log('data data ', data);
-      const bookData = {
-        id: data.id,
-        title: data.volumeInfo.title,
-        author: data.volumeInfo.authors?.[0] || 'Unknown',
-        description: data.volumeInfo.description || 'No description available.',
-        smallThumbnail: data.volumeInfo.imageLinks?.thumbnail || 'https://via.placeholder.com/128x192.png?text=No+Image',
-        mediumThumbnail: data.volumeInfo.imageLinks?.medium,
-        pageCount: data.volumeInfo.pageCount || 'Unknown',
-        publisher: data.volumeInfo.publisher || 'Unknown',
-        publishedDate: data.volumeInfo.publishedDate || 'Unknown',
-        categories: data.volumeInfo.categories || [],
-        language: data.volumeInfo.language || 'Unknown',
-        averageRating: data.volumeInfo.averageRating || 'Unknown',
-        ratingsCount: data.volumeInfo.ratingsCount || 'Unknown',
-        previewLink: data.volumeInfo.previewLink || '',
-      };
-      setBook(bookData);
+
+      console.log('myBook myBook: ', myBook);
+      // const response = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}`);
+      // const data = await response.json();
+      // console.log('data data ', data);
+      
+      setBook(myBook);
       setIsLoading(false);
     };
     fetchBook();
   }, [id]);
 
   useEffect(() => {
-    const fetchLists = async () => {
-      let listData = await getLists();
-      setLists([...listData]);
-    };
-    fetchLists();
+    handleGetLists();
   }, []);
 
   const fetchReviews = useCallback(async () => {
@@ -70,7 +56,7 @@ const BookDetails = () => {
       console.log('trying to add to list', selectedList);
       console.log('tttt id ', book.id);
       const bookData = {
-        bookId: book.id,
+        bookId: book.bookId,
         title: book.title,
         authors: [book.author],
         description: book.description,
@@ -81,6 +67,7 @@ const BookDetails = () => {
 
       if (addedBook.success) {
         openToastifyMessage("success", addedBook.message);
+        handleGetLists();
     } else if (!addedBook.success) {
         openToastifyMessage("error", addedBook.error);
     }
@@ -98,7 +85,7 @@ const BookDetails = () => {
       {!isLoading && book && (
         <>
           <div className="flex flex-col md:flex-row gap-8">
-            <img src={book.mediumThumbnail || book.smallThumbnail} alt={book.title} className="w-full md:w-[310px] rounded-md shadow-md h-[465px] object-cover" />
+            <img src={book.smallThumbnail} alt={book.title} className="w-full md:w-[310px] rounded-md shadow-md h-[465px] object-cover" />
             <div className="flex-1">
               <h1 className="text-3xl font-bold mb-4 text-white">{book.title}</h1>
               <p className="text-gray-400 mb-2">
@@ -135,7 +122,7 @@ const BookDetails = () => {
           </div>
           <div className="w-full my-10">
 
-          {lists.length > 0 && (
+          {lists && (
                 <div className="mt-4">
                   <label htmlFor="lists" className="block font-bold mb-2 text-white">
                     Add to List:

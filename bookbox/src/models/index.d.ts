@@ -18,9 +18,9 @@ type EagerBook = {
   readonly description: string;
   readonly categories?: (string | null)[] | null;
   readonly thumbnail: string;
+  readonly listBooksId?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly listBooksId?: string | null;
 }
 
 type LazyBook = {
@@ -35,9 +35,9 @@ type LazyBook = {
   readonly description: string;
   readonly categories?: (string | null)[] | null;
   readonly thumbnail: string;
+  readonly listBooksId?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly listBooksId?: string | null;
 }
 
 export declare type Book = LazyLoading extends LazyLoadingDisabled ? EagerBook : LazyBook
