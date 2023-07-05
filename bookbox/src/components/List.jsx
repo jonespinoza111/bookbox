@@ -38,7 +38,7 @@ const List = ({ list, updateLists }) => {
             )}
         </div>
         <div className="buttons-container">
-            <button className="bg-white text-black px-4 py-2 mr-2 hover:bg-gray-200 rounded-md mt-2" onClick={onViewAll}>View All</button>
+            <button className="bg-white text-black px-4 py-2 mr-2 hover:bg-gray-200 rounded-md mt-2 disabled:bg-gray-400" onClick={onViewAll} disabled={list.books && list.books.length < 1}>View All</button>
             <button className="bg-white text-black px-4 py-2 hover:bg-gray-200 rounded-md mt-2 mr-2" onClick={onDelete}>Delete List</button>
         </div>
     </div>

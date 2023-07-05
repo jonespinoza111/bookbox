@@ -7,10 +7,12 @@ import { openToastifyMessage } from "../components/ToastifyMessage";
 
 
 const ViewList = () => {
-    const { listId } = useParams();
+    const { id } = useParams();
     const { lists, handleGetLists } = useUserContext();
+
+    console.log('lists lists lists: ', lists, id);
     
-    const list = lists && lists.find(l => l.listId === listId);
+    const list = lists && lists.find(l => l.id === id);
 
     const [editMode, setEditMode] = useState(false);
     const [selectedBooks, setSelectedBooks] = useState([]);
