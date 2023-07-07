@@ -1,21 +1,27 @@
 import { useState } from "react";
 import { createReview } from "../utility";
+import Rating from 'react-rating';
 
 const ReviewForm = ({ bookId, fetchReviews }) => {
     const [review, setReview] = useState({
       reviewerName: '',
-      rating: '',
+      rating: 0,
       comments: '',
     });
+
+    const handleRatingChange = (value) => {
+      setReview({ ...review, rating: value });
+    };
+  
   
     const handleSubmit = async (e) => {
       e.preventDefault();
 
-      console.log('type of review.rating ', typeof(parseInt(review.rating)));
+      console.log('type of review.rating ', typeof(review.rating));
 
       let reviewInfo = {
         name: review.reviewerName,
-        rating: parseInt(review.rating),
+        rating: review.rating,
         content: review.comments,
         bookId: bookId,
         createdAt: new Date().toString()
@@ -25,7 +31,7 @@ const ReviewForm = ({ bookId, fetchReviews }) => {
 
       setReview({
         reviewerName: '',
-        rating: '',
+        rating: 0,
         comments: '',
       });
 
@@ -44,14 +50,14 @@ const ReviewForm = ({ bookId, fetchReviews }) => {
           }
           className="border border-gray-300 rounded px-3 py-2 mb-2 w-full"
         />
-        <input
-          type="number"
+        <Rating
           placeholder="Rating (1-5)"
-          value={review.rating}
-          max={5}
-          min={1}
-          onChange={(e) => setReview({ ...review, rating: e.target.value })}
-          className="border border-gray-300 rounded px-3 py-2 mb-2 w-full"
+          emptySymbol={<span className="rating-icon">&#9734;</span>}
+          fullSymbol={<span className="rating-icon">&#9733;</span>}
+          initialRating={review.rating}
+          onChange={handleRatingChange}
+          fractions={2}
+          className="text-[2em] mb-2"
         />
         <textarea
           placeholder="Comments"
