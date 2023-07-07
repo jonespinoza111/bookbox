@@ -19,7 +19,7 @@ const CreateListForm = ({ updateLists }) => {
     setDescription('');
   };
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-5 my-10 max-w-md w-full h-[16em] mx-auto">
+    <form onSubmit={handleSubmit} className="bg-white p-5 my-10 max-w-md w-full h-[16em] lg:mx-auto">
       <div className="mb-4">
         <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
           Name

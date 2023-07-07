@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import Book from "../components/Book"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { removeBookFromList } from "../utility";
 import { useUserContext } from "../context/UserContext";
 import { openToastifyMessage } from "../components/ToastifyMessage";
@@ -9,8 +9,6 @@ import { openToastifyMessage } from "../components/ToastifyMessage";
 const ViewList = () => {
     const { id } = useParams();
     const { lists, handleGetLists } = useUserContext();
-
-    console.log('lists lists lists: ', lists, id);
     
     const list = lists && lists.find(l => l.id === id);
 
@@ -30,7 +28,6 @@ const ViewList = () => {
     };
 
     const handleRemoveFromList = async () => {
-      console.log('Removing these books from the list ', selectedBooks, listId);
       const removedBooks = await removeBookFromList(list.id, selectedBooks, handleGetLists);
       // Update the list state with the updatedBooks array
       // You can use a state management library or pass the updatedBooks array to a parent component to update the list state
@@ -47,7 +44,7 @@ const ViewList = () => {
 
     console.log('make a list ', list);
     return (
-      <div className='flex justify-center items-start w-[100%] pt-2 flex-col mx-10 my-5 bg-black border- border-white px-5'>
+      <div className='flex justify-center items-start w-full pt-2 flex-col md:mx-10 my-5 bg-black border- border-white  pl-10 md:px-5'>
         <h3 className='text-white'>{list && list.name}</h3>
         <div className='books-container flex flex-row justify-start items-center flex-wrap gap-y-3 gap-x-4 my-4 w-[100%]'>
           {list && list.books && list.books.map(book => (

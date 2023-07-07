@@ -19,7 +19,7 @@ const List = ({ list, updateLists }) => {
     }
    };
   return (
-    <div key={list.id} className='flex justify-center items-start w-[37em] pt-2 flex-col my-5 bg-transparent border-t-[1px] border-gray-600 px-5'>
+    <div key={list.id} className='flex justify-center items-start w-full md:w-[37em] pt-2 flex-col my-5 bg-transparent border-t-[1px] border-gray-600 md:px-5'>
         <div className="flex flex-row justify-between w-full">
             <h3 className='text-white'>{list.name}</h3>
             <span className="text-white">{list.books.length} books</span>

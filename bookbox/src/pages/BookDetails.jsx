@@ -85,7 +85,7 @@ const BookDetails = () => {
       {!isLoading && book && (
         <>
           <div className="flex flex-col md:flex-row gap-8">
-            <img src={book.smallThumbnail} alt={book.title} className="w-full md:w-[310px] rounded-md shadow-md h-[465px] object-cover" />
+            <img src={book.mediumThumbnail} alt={book.title} className="w-[200px] md:w-[225px] h-auto md:h-[375px] object-fit rounded-md shadow-md" />
             <div className="flex-1">
               <h1 className="text-3xl font-bold mb-4 text-white">{book.title}</h1>
               <p className="text-gray-400 mb-2">
@@ -127,11 +127,11 @@ const BookDetails = () => {
                   <label htmlFor="lists" className="block font-bold mb-2 text-white">
                     Add to List:
                   </label>
-                  <div className="flex flex-col">
+                  <div className="flex flex-col w-full">
 
                     <select
                       id="lists"
-                      className="border border-gray-300 rounded-md p-2 w-[25%]"
+                      className="border border-gray-300 rounded-md p-2 w-full md:w-[25%] md:min-w-[15em]"
                       value={selectedList || ''}
                       onChange={(e) => setSelectedList(e.target.value)}
                     >
@@ -144,7 +144,7 @@ const BookDetails = () => {
                     </select>
                     <button
                       onClick={handleAddToList}
-                      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md mt-2 w-[25%]"
+                      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md mt-2 w-full md:w-[25%] md:min-w-[15em]"
                       disabled={!selectedList}
                     >
                       Add to List

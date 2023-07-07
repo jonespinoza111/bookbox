@@ -10,7 +10,7 @@ const MyLists = () => {
     handleGetLists();
   }, []) 
   return (
-    <div className="mx-10 my-5 flex flex-row">
+    <div className="mx-10 my-5 flex flex-col lg:flex-row">
         <div className=''>
           <h2 className='text-white'>My Lists</h2>
           <div className="flex flex-col flex-wrap gap-x-5">

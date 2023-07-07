@@ -7,7 +7,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="text-white font-bold text-xl">
-              My Bookshelf
+              BookBox
             </Link>
           </div>
           <div className="flex">

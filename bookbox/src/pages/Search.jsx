@@ -21,6 +21,7 @@ const Search = () => {
       if (event) {
         event.preventDefault();
       }
+      resetResults();
       handleFetch(handleSearch, query);
     };
 
@@ -30,7 +31,7 @@ const Search = () => {
     console.log('all the results', results);
 
   return (
-    <div>
+    <div className='mb-10'>
       <SearchBar setQuery={setQuery} query={query} onHandleSearch={onHandleSearch} />
       <Results results={results} onLoadMore={onHandleSearchMore} isLoading={isLoading} title={`Search Results: `} search={true} />
     </div>

@@ -3,10 +3,10 @@ import { useState } from 'react'
 const SearchBar = ({ setQuery, query, onHandleSearch }) => {
 
   return (
-    <form onSubmit={onHandleSearch} className='mx-[5em] my-[2em]'>
+    <form onSubmit={onHandleSearch} className='mx-[1em] md:mx-[5em] my-[2em]'>
       <input
         type="text"
-        placeholder="Search books..."
+        placeholder="Search for a title..."
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         className="border border-gray-300 rounded-md px-4 py-2 w-full"

@@ -10,25 +10,18 @@ export const Category = {
   FANTASY: "Fantasy",
 };
 
+export const Links = {
+  relevance: "https://www.googleapis.com/books/v1/volumes?q=*&orderBy=relevance&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU",
+  genre: "https://www.googleapis.com/books/v1/volumes?q=subject:fiction&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU",
+  newest: "https://www.googleapis.com/books/v1/volumes?q=subject:fiction&orderBy=newest&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU",
+}
+
 export async function fetchBookData(id) {
   const response = await fetch(
     `https://www.googleapis.com/books/v1/volumes/${id}?key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU`
   );
 
-  // const relatedBooks = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}/related?key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU`);
-
   const data = await response.json();
-  console.log('Related books : ', data);
-  // const bookData = {
-  //   bookId: data.id,
-  //   title: data.volumeInfo.title,
-  //   authors: data.volumeInfo.authors,
-  //   description: data.volumeInfo.description,
-  //   categories: data.volumeInfo.categories?.map(
-  //     (category) => Category[category.toUpperCase()]
-  //   ),
-  //   thumbnail: data.volumeInfo.imageLinks?.thumbnail,
-  // };
 
   const bookData = {
     bookId: data.id,
@@ -255,4 +248,23 @@ export async function getCategoryBooks(category, page = 1) {
 
   console.log("Many category books ", categoryBooks);
   return categoryBooks.items;
+}
+
+export const fetchBooks = async (linkName, page = 1, link = null) => {
+  console.log('fullLink here here: ', link);
+  let fetchLink;
+  if (link) {
+    fetchLink = link;
+  } else {
+    fetchLink = Links[linkName];
+  }
+  fetchLink = fetchLink + `&startIndex=${
+    (page - 1) * 10
+  }`
+
+  console.log('fetchLInk arrrrghhh ', fetchLink);
+  const fetchedBooks = await fetch(fetchLink).then(response => response.json());
+  console.log('link name : ', linkName);
+  console.log('fetchedBooks : ', fetchedBooks);
+  return fetchedBooks.items;
 }
