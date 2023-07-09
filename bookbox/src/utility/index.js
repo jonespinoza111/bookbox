@@ -153,12 +153,11 @@ export async function deleteList(listId, cb) {
 }
 
 export async function createReview(reviewInfo) {
-  const user = await Auth.currentAuthenticatedUser();
+  // const user = await Auth.currentAuthenticatedUser();
 
   await DataStore.save(
     new Review({
-      author: user.attributes.sub,
-      ...reviewInfo,
+      ...reviewInfo
     })
   );
 }
@@ -168,7 +167,7 @@ export async function editReview(reviewId, updates) {
   
   const updatedReview = await DataStore.save(
     Review.copyOf(original, updated => {
-      updated.name = updates.name;
+      updated.title = updates.title;
       updated.rating = updates.rating;
       updated.content = updates.content;
       updated.updatedAt = updates.updatedAt;

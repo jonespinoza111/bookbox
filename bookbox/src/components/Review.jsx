@@ -60,7 +60,8 @@ const Review = ({ review }) => {
           )}
         </div>
         <div>
-          <h3 className="text-lg font-semibold mb-2">{review.name}</h3>
+          <h3 className="text-lg text-gray-500 mb-2">{review.username}</h3>
+          <h3 className="text-lg font-semibold mb-2">{review.title}</h3>
           <Rating
             placeholder="Rating (1-5)"
             emptySymbol={<span className="rating-icon">&#9734;</span>}

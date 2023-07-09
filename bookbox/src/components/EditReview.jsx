@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Rating from 'react-rating';
 import { useUserContext } from '../context/UserContext';
 import { editReview } from '../utility';
@@ -7,12 +7,21 @@ import { openToastifyMessage } from './ToastifyMessage';
 const EditReview = ({ review, cancel }) => {
   const { userInfo, handleGetReviews } = useUserContext();
   const [editedReview, setEditedReview] = useState({
-    reviewerName: review.name,
+    title: review.title,
     rating: review.rating,
     comments: review.content,
   });
 
-  
+  const [saveDisabled, setSaveDisabled] = useState(true);
+
+  useEffect(() => {
+    const formChanged =
+      review.title !== editedReview.title ||
+      review.rating !== editedReview.rating ||
+      review.content !== editedReview.comments;
+
+    setSaveDisabled(!formChanged);
+  }, [editedReview, review]);
 
   const handleRatingChange = (value) => {
     setEditedReview({ ...editedReview, rating: value });
@@ -24,7 +33,7 @@ const EditReview = ({ review, cancel }) => {
     console.log('type of editedReview.rating ', typeof editedReview.rating);
 
     let updatedReview = {
-      name: editedReview.reviewerName,
+      title: editedReview.title,
       rating: editedReview.rating,
       content: editedReview.comments,
       updatedAt: new Date().toString(),
@@ -46,7 +55,7 @@ const EditReview = ({ review, cancel }) => {
     // You can pass the updatedReview object to the parent component for saving
 
     setEditedReview({
-      reviewerName: '',
+      title: '',
       rating: 0,
       comments: '',
     });
@@ -57,10 +66,10 @@ const EditReview = ({ review, cancel }) => {
       <h3 className="text-lg font-semibold mb-2">Edit Review</h3>
       <input
         type="text"
-        placeholder="Your Name"
-        value={editedReview.reviewerName}
+        placeholder="title"
+        value={editedReview.title}
         onChange={(e) =>
-          setEditedReview({ ...editedReview, reviewerName: e.target.value })
+          setEditedReview({ ...editedReview, title: e.target.value })
         }
         className="border border-gray-300 rounded px-3 py-2 mb-2 w-full"
       />
@@ -83,7 +92,8 @@ const EditReview = ({ review, cancel }) => {
       ></textarea>
       <button
         type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-300"
+        disabled={saveDisabled}
       >
         Save
       </button>

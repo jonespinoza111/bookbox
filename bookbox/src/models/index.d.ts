@@ -85,7 +85,8 @@ type EagerReview = {
     identifier: ManagedIdentifier<Review, 'id'>;
   };
   readonly id: string;
-  readonly name: string;
+  readonly username: string;
+  readonly title: string;
   readonly content: string;
   readonly rating: number;
   readonly createdAt: string;
@@ -99,7 +100,8 @@ type LazyReview = {
     identifier: ManagedIdentifier<Review, 'id'>;
   };
   readonly id: string;
-  readonly name: string;
+  readonly username: string;
+  readonly title: string;
   readonly content: string;
   readonly rating: number;
   readonly createdAt: string;
