@@ -6,6 +6,7 @@ import ViewList from './pages/ViewList'
 import MyLists from './pages/MyLists'
 import CategoryResults from './pages/CategoryResults'
 import AllResults from './pages/AllResults'
+import MyReviews from './pages/MyReviews'
 
 const MainRoutes = () => {
   return (
@@ -17,6 +18,7 @@ const MainRoutes = () => {
         <Route exact path="/lists" element={<MyLists />} />
         <Route exact path="/:category" element={<CategoryResults />} />
         <Route exact path="/all" element={<AllResults />} />
+        <Route exact path="/reviews" element={<MyReviews />} />
         {/* <Route path="/add">
           <AddBook />
         </Route> */}

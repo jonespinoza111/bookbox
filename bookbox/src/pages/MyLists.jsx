@@ -19,7 +19,7 @@ const MyLists = () => {
                 <List key={list.id} list={list} updateLists={handleGetLists} />
               )
             })}
-            {!lists && (
+            {(!lists || lists.length < 1) && (
               <span className="text-gray-400 mt-4">No lists. Create one now!</span>
             )}
           </div>

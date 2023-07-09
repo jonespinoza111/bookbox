@@ -112,9 +112,14 @@ const BookDetails = () => {
               <p className="text-gray-400 mb-6">
                 <span className="font-bold text-white">Ratings Count:</span> {book.ratingsCount}
               </p>
-              <a href={book.previewLink} target="_blank" rel="noreferrer" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md">
-                Preview Book
-              </a>
+              <div className="flex flex-col gap-y-3 md:gap-y-0 md:flex-row">  
+                <a href={book.previewLink} target="_blank" rel="noreferrer" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md">
+                  Preview Book
+                </a>
+                <a href={book.buyLink} target="_blank" rel="noreferrer" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md md:ml-2 cursor-pointer">
+                  Buy Book ${book.listPrice.amount}
+                </a>
+              </div>
             </div>
           </div>
           <div className="w-full my-10">

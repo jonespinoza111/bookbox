@@ -29,7 +29,7 @@ const List = ({ list, updateLists }) => {
         </div>
         <div className='books-container flex flex-row justify-start items-center flex-wrap gap-y-3 gap-x-4 my-4 w-[100%] cursor-pointer' onClick={onViewAll}>
             {list.books && list.books.slice(0, 5).map(book => (
-            <BookThumbnail key={book.bookId} thumbnail={book.thumbnail} size="small" />
+            <BookThumbnail key={book.bookId} title={book.title} thumbnail={book.thumbnail} size="small" />
             ))}
             {list.books && list.books.length < 1 && (
                 <div className="w-[100%] flex justify-start items-center">

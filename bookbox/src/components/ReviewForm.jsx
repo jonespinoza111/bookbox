@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { createReview } from "../utility";
 import Rating from 'react-rating';
+import { useUserContext } from "../context/UserContext";
 
 const ReviewForm = ({ bookId, fetchReviews }) => {
+  const { userInfo } = useUserContext();
     const [review, setReview] = useState({
       reviewerName: '',
       rating: 0,
@@ -24,6 +26,7 @@ const ReviewForm = ({ bookId, fetchReviews }) => {
         rating: review.rating,
         content: review.comments,
         bookId: bookId,
+        author: userInfo.attributes.sub,
         createdAt: new Date().toString()
       }
 

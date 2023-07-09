@@ -38,6 +38,8 @@ export async function fetchBookData(id) {
     averageRating: data.volumeInfo.averageRating || 'Unknown',
     ratingsCount: data.volumeInfo.ratingsCount || 'Unknown',
     previewLink: data.volumeInfo.previewLink || '',
+    listPrice: data.saleInfo.listPrice || 'Unknown',
+    buyLink: data.saleInfo.buyLink || ''
   };
   // const query = await DataStore.query(Book);
   // const book = await DataStore.save(new Book(bookData));
@@ -161,12 +163,48 @@ export async function createReview(reviewInfo) {
   );
 }
 
+export async function editReview(reviewId, updates) {
+  const original = await DataStore.query(Review, reviewId);
+  
+  const updatedReview = await DataStore.save(
+    Review.copyOf(original, updated => {
+      updated.name = updates.name;
+      updated.rating = updates.rating;
+      updated.content = updates.content;
+      updated.updatedAt = updates.updatedAt;
+    })
+  );
+
+  return updatedReview ? { updatedReview, success: true, message: "Review updated!" }
+  : { success: false, error: "Could not update the review." };
+}
+
 export async function getReviews(bookId) {
   const reviews = await DataStore.query(Review, (review) =>
     review.bookId.eq(bookId)
   );
   console.log("my reviews ", reviews);
   return reviews.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+export async function getReviewsFromUserId(userId) {
+  const reviews = await DataStore.query(Review, (review) =>
+    review.author.eq(userId)
+  );
+  console.log("my reviews from userID ", reviews);
+  return reviews.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+export async function deleteReview(reviewId, cb) {
+  const reviewToDelete = await DataStore.query(Review, reviewId);
+  const deletedReview = await DataStore.delete(reviewToDelete);
+  console.log("this is the deleted review ", deletedReview);
+  cb();
+
+  return deletedReview
+    ? { deletedReview, success: true, message: "Review deleted!" }
+    : { success: false, error: "Could not delete review." };
+  
 }
 
 export async function handleSearch(query, page = 1) {
