@@ -12,7 +12,7 @@ const MyReviews = () => {
   }, []) 
   return (    
     <div className="mx-10 my-5 flex flex-col lg:flex-row">
-        <div className='w-[50%]  '>
+        <div className='w-full md:w-[50%]  '>
           <h2 className='text-white'>My Reviews</h2>
           <div className="flex flex-col flex-wrap gap-x-5">
             {reviews && reviews.map((review, index) => {

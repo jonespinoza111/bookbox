@@ -10,15 +10,17 @@ export const Category = {
   FANTASY: "Fantasy",
 };
 
+const apiKey = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY;
+
 export const Links = {
-  relevance: "https://www.googleapis.com/books/v1/volumes?q=*&orderBy=relevance&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU",
-  genre: "https://www.googleapis.com/books/v1/volumes?q=subject:fiction&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU",
-  newest: "https://www.googleapis.com/books/v1/volumes?q=subject:fiction&orderBy=newest&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU",
+  relevance: `https://www.googleapis.com/books/v1/volumes?q=*&orderBy=relevance&maxResults=10&key=${apiKey}`,
+  genre: `https://www.googleapis.com/books/v1/volumes?q=subject:fiction&maxResults=10&key=${apiKey}`,
+  newest: `https://www.googleapis.com/books/v1/volumes?q=subject:fiction&orderBy=newest&maxResults=10&key=${apiKey}`,
 }
 
 export async function fetchBookData(id) {
   const response = await fetch(
-    `https://www.googleapis.com/books/v1/volumes/${id}?key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU`
+    `https://www.googleapis.com/books/v1/volumes/${id}?key=${apiKey}`
   );
 
   const data = await response.json();
@@ -211,7 +213,7 @@ export async function handleSearch(query, page = 1) {
   const response = await fetch(
     `https://www.googleapis.com/books/v1/volumes?q=${query}&startIndex=${
       (page - 1) * 10
-    }&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU`
+    }&maxResults=10&key=${apiKey}`
   );
   const data = await response.json();
   console.log("how about these books today ..", data);
@@ -231,12 +233,11 @@ export async function handleSearch(query, page = 1) {
 
 export const getHomeBooksToDisplay = async () => {
   const genrePath =
-    "https://www.googleapis.com/books/v1/volumes?q=subject:fiction&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU";
+    `https://www.googleapis.com/books/v1/volumes?q=subject:fiction&maxResults=10&key=${apiKey}`;
   const relevancePath =
-    "https://www.googleapis.com/books/v1/volumes?q=*&orderBy=relevance&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU";
+    `https://www.googleapis.com/books/v1/volumes?q=*&orderBy=relevance&maxResults=10&key=${apiKey}`;
   const newestPath =
-    "https://www.googleapis.com/books/v1/volumes?q=subject:fiction&orderBy=newest&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU";
-  // const categoriesPath = 'https://www.googleapis.com/books/v1/volumes?q=subject:horror&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU';
+    `https://www.googleapis.com/books/v1/volumes?q=subject:fiction&orderBy=newest&maxResults=10&key=${apiKey}`;
 
   const fetchGenreBooks = fetch(genrePath).then((response) => response.json());
   const fetchRelevanceBooks = fetch(relevancePath).then((response) =>
@@ -278,7 +279,7 @@ export async function getCategoryBooks(category, page = 1) {
     category
   )}&startIndex=${
     (page - 1) * 10
-  }&maxResults=10&key=AIzaSyBxOOizpDa_Q3-SQ6g9_EktOK315JTXgVU`;
+  }&maxResults=10&key=${apiKey}`;
   const categoryBooks = await fetch(categoriesPath).then((response) =>
     response.json()
   );

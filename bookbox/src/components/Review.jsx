@@ -53,22 +53,22 @@ const Review = ({ review }) => {
 
     console.log('the godly review', review);
     return (
-      <div className={`bg-white p-4 rounded shadow my-4 relative ${needsThumbnail && 'flex flex-row'}`}>
-        <div className="mr-4">
+      <div className={`bg-white p-4 rounded shadow my-4 relative ${needsThumbnail && 'flex md:flex-row flex-col'}`}>
+        <div className="mr-4 mb-4 md:mb-0">
           {bookInfo && needsThumbnail && (
             <BookThumbnail key={bookInfo.bookId} title={bookInfo.title} thumbnail={bookInfo.smallThumbnail} size="small" />
           )}
         </div>
         <div>
-          <h3 className="text-lg text-gray-500 mb-2">{review.username}</h3>
-          <h3 className="text-lg font-semibold mb-2">{review.title}</h3>
+          <h3 className="text-md sm:text-lg text-gray-500 mb-2">{review.username}</h3>
+          <h3 className="text-md sm:text-lg font-semibold mb-2">{review.title}</h3>
           <Rating
             placeholder="Rating (1-5)"
             emptySymbol={<span className="rating-icon">&#9734;</span>}
             fullSymbol={<span className="rating-icon">&#9733;</span>}
             initialRating={review.rating}
             fractions={2}
-            className="text-[2em] mb-2"
+            className="text-[1.6em] sm:text-[2em] mb-2"
             readonly
           />
           <p className="mb-2">{review.content}</p>
