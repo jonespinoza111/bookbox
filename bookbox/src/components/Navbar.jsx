@@ -74,6 +74,7 @@ const Navbar = () => {
             <div className={`fixed inset-y-0 right-0 w-64 bg-gray-700 z-40 text-white transform transition duration-300 ease-in-out flex flex-col ${
                 isMenuOpen ? 'translate-x-0' : 'translate-x-full'
               }`} ref={drawerRef}>
+              <span className='text-gray-200 px-3 py-2'>{userInfo.username}</span>
               <Link
                 to="/search"
                 className="text-gray-300 hover:bg-gray-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
