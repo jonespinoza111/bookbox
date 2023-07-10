@@ -2,11 +2,13 @@ import { Auth } from 'aws-amplify';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBars } from 'react-icons/fa';
+import { useUserContext } from '../context/UserContext';
 
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const drawerRef = useRef(null);
+  const { userInfo } = useUserContext();
 
   const handleLogout = async () => {
     try {
@@ -42,7 +44,9 @@ const Navbar = () => {
               BookBox
             </Link>
           </div>
-          <div className={`hidden md:flex`}>
+
+          <div className={`hidden md:flex flex-row items-center`}>
+            <span className='text-gray-200 mr-5'>Welcome, {userInfo.username}</span>
             <Link to="/search" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
               Search
             </Link>
