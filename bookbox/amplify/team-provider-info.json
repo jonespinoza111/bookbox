@@ -17,6 +17,9 @@
       },
       "api": {
         "bookboxGraphQL": {}
+      },
+      "hosting": {
+        "S3AndCloudFront": {}
       }
     }
   }
