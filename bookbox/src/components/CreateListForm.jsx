@@ -1,25 +1,27 @@
-import { useState } from 'react'
-import { createList } from '../utility';
-import { openToastifyMessage } from './ToastifyMessage';
+import { useState } from "react";
+import { openToastifyMessage } from "./ToastifyMessage";
+import { createList } from "../utility";
 
 const CreateListForm = ({ updateLists }) => {
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('creating the new list');
     const list = await createList(name, description, updateLists);
     if (list.success) {
-      openToastifyMessage('success', list.message)
+      openToastifyMessage("success", list.message);
     } else if (!list.success) {
-      openToastifyMessage('error', list.error);
+      openToastifyMessage("error", list.error);
     }
-    setName('');
-    setDescription('');
+    setName("");
+    setDescription("");
   };
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-5 my-10 max-w-md w-full h-[16em] lg:mx-auto">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-5 my-10 max-w-md w-full h-[16em] lg:mx-auto"
+    >
       <div className="mb-4">
         <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
           Name
@@ -57,7 +59,7 @@ const CreateListForm = ({ updateLists }) => {
         </button>
       </div>
     </form>
-  )
-}
+  );
+};
 
 export default CreateListForm;

@@ -16,7 +16,7 @@
         "bookbox288c3306": {}
       },
       "api": {
-        "bookbox": {}
+        "bookboxGraphQL": {}
       }
     }
   }

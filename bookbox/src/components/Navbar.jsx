@@ -1,9 +1,8 @@
-import { Auth } from 'aws-amplify';
-import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaBars } from 'react-icons/fa';
-import { useUserContext } from '../context/UserContext';
-
+import { Auth } from "aws-amplify";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { FaBars } from "react-icons/fa";
+import { useUserContext } from "../context/UserContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,7 +13,7 @@ const Navbar = () => {
     try {
       await Auth.signOut();
     } catch (error) {
-      console.log('Error signing out:', error);
+      console.log("Error signing out:", error);
     }
   };
 
@@ -29,10 +28,10 @@ const Navbar = () => {
       }
     };
 
-    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener("mousedown", handleOutsideClick);
 
     return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
   return (
@@ -46,20 +45,33 @@ const Navbar = () => {
           </div>
 
           <div className={`hidden md:flex flex-row items-center`}>
-            <span className='text-gray-200 mr-5'>Welcome, {userInfo.username}</span>
-            <Link to="/search" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            <span className="text-gray-200 mr-5">
+              Welcome, {userInfo && userInfo.username}
+            </span>
+            <Link
+              to="/search"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+            >
               Search
             </Link>
-            <Link to="/lists" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            <Link
+              to="/lists"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+            >
               My Lists
             </Link>
-            <Link to="/reviews" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            <Link
+              to="/reviews"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+            >
               My Reviews
             </Link>
-            <div className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer" onClick={handleLogout}>
+            <div
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
+              onClick={handleLogout}
+            >
               Logout
             </div>
-            
           </div>
           <div className="flex items-center md:hidden">
             <div className="flex">
@@ -71,10 +83,15 @@ const Navbar = () => {
                 <FaBars />
               </button>
             </div>
-            <div className={`fixed inset-y-0 right-0 w-64 bg-gray-700 z-40 text-white transform transition duration-300 ease-in-out flex flex-col ${
-                isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-              }`} ref={drawerRef}>
-              <span className='text-gray-200 px-3 py-2'>{userInfo.username}</span>
+            <div
+              className={`fixed inset-y-0 right-0 w-64 bg-gray-700 z-40 text-white transform transition duration-300 ease-in-out flex flex-col ${
+                isMenuOpen ? "translate-x-0" : "translate-x-full"
+              }`}
+              ref={drawerRef}
+            >
+              <span className="text-gray-200 px-3 py-2">
+                {userInfo && userInfo.username}
+              </span>
               <Link
                 to="/search"
                 className="text-gray-300 hover:bg-gray-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -110,7 +127,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
 export default Navbar;

@@ -1,9 +1,6 @@
-import { useState } from 'react'
-
 const SearchBar = ({ setQuery, query, onHandleSearch }) => {
-
   return (
-    <form onSubmit={onHandleSearch} className='mx-[1em] md:mx-[5em] my-[2em]'>
+    <form onSubmit={onHandleSearch} className="mx-[1em] md:mx-[5em] my-[2em]">
       <input
         type="text"
         placeholder="Search for a title..."
@@ -18,7 +15,7 @@ const SearchBar = ({ setQuery, query, onHandleSearch }) => {
         Search
       </button>
     </form>
-  )
-}
+  );
+};
 
 export default SearchBar;

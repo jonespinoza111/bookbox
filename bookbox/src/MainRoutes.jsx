@@ -19,9 +19,6 @@ const MainRoutes = () => {
         <Route exact path="/:category" element={<CategoryResults />} />
         <Route exact path="/all" element={<AllResults />} />
         <Route exact path="/reviews" element={<MyReviews />} />
-        {/* <Route path="/add">
-          <AddBook />
-        </Route> */}
     </Routes>
   )
 }

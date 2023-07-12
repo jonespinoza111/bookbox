@@ -1,6 +1,6 @@
 {
   "api": {
-    "bookbox": {
+    "bookboxGraphQL": {
       "dependsOn": [
         {
           "attributes": [

@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import Rating from 'react-rating';
-import { useUserContext } from '../context/UserContext';
-import { editReview } from '../utility';
-import { openToastifyMessage } from './ToastifyMessage';
+import { useEffect, useState } from "react";
+import Rating from "react-rating";
+import { useUserContext } from "../context/UserContext";
+import { editReview } from "../utility";
+import { openToastifyMessage } from "./ToastifyMessage";
 
 const EditReview = ({ review, cancel }) => {
-  const { userInfo, handleGetReviews } = useUserContext();
+  const { handleGetReviews } = useUserContext();
   const [editedReview, setEditedReview] = useState({
     title: review.title,
     rating: review.rating,
@@ -30,8 +30,6 @@ const EditReview = ({ review, cancel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log('type of editedReview.rating ', typeof editedReview.rating);
-
     let updatedReview = {
       title: editedReview.title,
       rating: editedReview.rating,
@@ -40,24 +38,20 @@ const EditReview = ({ review, cancel }) => {
     };
 
     const newReview = await editReview(review.id, updatedReview);
-    console.log('this is the new review here: ', newReview);
 
     cancel();
 
     if (newReview.success) {
-        openToastifyMessage("success", newReview.message);
-        handleGetReviews();
+      openToastifyMessage("success", newReview.message);
+      handleGetReviews();
     } else if (!newReview.success) {
-        openToastifyMessage("error", newReview.error);
+      openToastifyMessage("error", newReview.error);
     }
 
-    // Implement your update logic here
-    // You can pass the updatedReview object to the parent component for saving
-
     setEditedReview({
-      title: '',
+      title: "",
       rating: 0,
-      comments: '',
+      comments: "",
     });
   };
 

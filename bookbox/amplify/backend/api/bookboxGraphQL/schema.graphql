@@ -27,14 +27,3 @@ type Review @model @auth(rules: [{ allow: owner }]) {
   author: String!
   bookId: String!
 }
-
-
-type Query {
-  searchBooks(query: String!): [Book!]!
-  getList(id: ID!): List
-}
-
-type Mutation {
-  createList(name: String!): List!
-  BookToList(listId: ID!, bookId: ID!): List!
-}
