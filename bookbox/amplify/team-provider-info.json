@@ -19,7 +19,10 @@
         "bookboxGraphQL": {}
       },
       "hosting": {
-        "S3AndCloudFront": {}
+        "amplifyhosting": {
+          "appId": "d3supdqhny5bev",
+          "type": "manual"
+        }
       }
     }
   }
