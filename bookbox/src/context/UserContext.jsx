@@ -33,10 +33,12 @@ const UserProvider = ({ children }) => {
   };
 
   const handleGetReviews = async () => {
-    setIsLoading(true);
-    let reviewData = await getReviewsFromUserId(userInfo.attributes.sub);
-    setReviews([...reviewData]);
-    setIsLoading(false);
+    if (userInfo) {
+      setIsLoading(true);
+      let reviewData = await getReviewsFromUserId(userInfo.attributes.sub);
+      setReviews([...reviewData]);
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {

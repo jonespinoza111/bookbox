@@ -23,7 +23,7 @@ const List = ({ list, updateLists }) => {
     >
       <div className="flex flex-row justify-between w-full">
         <h3 className="text-white">{list.name}</h3>
-        <span className="text-white">{list.books.length} books</span>
+        <span className="text-white">{list.books.items.length} {list.books.items.length === 1 ? 'book' : 'books'}</span>
       </div>
       <div className="flex flex-row justify-between w-full mt-4">
         <span className="text-gray-400">{list.description}</span>
@@ -32,8 +32,8 @@ const List = ({ list, updateLists }) => {
         className="books-container flex flex-row justify-start items-center flex-wrap gap-y-3 gap-x-4 my-4 w-[100%] cursor-pointer"
         onClick={onViewAll}
       >
-        {list.books &&
-          list.books
+        {list.books.items &&
+          list.books.items
             .slice(0, 5)
             .map((book) => (
               <BookThumbnail
@@ -43,7 +43,7 @@ const List = ({ list, updateLists }) => {
                 size="small"
               />
             ))}
-        {list.books && list.books.length < 1 && (
+        {list.books.items && list.books.items.length < 1 && (
           <div className="w-[100%] flex justify-start items-center">
             <p className="text-white">This list is very empty!</p>
           </div>
@@ -53,7 +53,7 @@ const List = ({ list, updateLists }) => {
         <button
           className="bg-white text-black px-4 py-2 mr-2 hover:bg-gray-200 rounded-md mt-2 disabled:bg-gray-400"
           onClick={onViewAll}
-          disabled={list.books && list.books.length < 1}
+          disabled={list.books.items && list.books.items.length < 1}
         >
           View All
         </button>

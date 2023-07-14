@@ -26,7 +26,7 @@ const ReviewForm = ({ bookId, fetchReviews }) => {
       username: userInfo.username,
       author: userInfo.attributes.sub,
       createdAt: new Date().toString(),
-      updatedAt: null,
+      updatedAt: '',
     };
 
     await createReview(reviewInfo);

@@ -1,5 +1,6 @@
-import { Auth, DataStore } from "aws-amplify";
+import { Auth, DataStore, graphqlOperation } from "aws-amplify";
 import { Book, List, Review } from "../models";
+import { API } from "aws-amplify";
 
 export const Category = {
   FICTION: "Fiction",
@@ -30,6 +31,7 @@ export async function createList(name, description, cb) {
       books: [],
     })
   );
+
   cb();
   return newList
     ? { newList, success: true, message: "List created!" }
@@ -49,7 +51,36 @@ export async function getLists() {
       return newList;
     })
   );
-  return outputLists;
+
+  const query = `
+  query GetListsByUserId($userId: String) {
+    listLists(filter: {userId: {eq: $userId} }) {
+      items {
+        createdAt
+        description
+        name
+        id
+        userId
+        books {
+          items {
+            authors
+            bookId
+            categories
+            description
+            id
+            listBooksId
+            owner
+            title
+            thumbnail
+          }
+        }
+      }
+    }
+  }`
+
+  const results = await API.graphql(graphqlOperation(query, { userId: user.attributes.sub }))
+
+  return results.data.listLists.items || outputLists;
 }
 
 export async function addBookToList(listId, bookInfo) {
@@ -145,6 +176,7 @@ export async function getReviews(bookId) {
   const reviews = await DataStore.query(Review, (review) =>
     review.bookId.eq(bookId)
   );
+  
   return reviews.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
@@ -152,7 +184,27 @@ export async function getReviewsFromUserId(userId) {
   const reviews = await DataStore.query(Review, (review) =>
     review.author.eq(userId)
   );
-  return reviews.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+
+  const query = `
+  query GetReviewsByUserId($userId: String) {
+    listReviews(filter: {author: {eq: $userId} }) {
+      items {
+        author
+        createdAt
+        content
+        bookId
+        id
+        rating
+        title
+        username
+        updatedAt
+      }
+    }
+  }`
+
+  let results = await API.graphql(graphqlOperation(query, { userId }))
+  results = results.data.listReviews.items;
+  return results.sort((a, b) => b.createdAt.localeCompare(a.createdAt)) || reviews.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
 export async function deleteReview(reviewId, cb) {

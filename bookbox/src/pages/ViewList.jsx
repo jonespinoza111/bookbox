@@ -48,8 +48,8 @@ const ViewList = () => {
       <h3 className="text-white">{list && list.name}</h3>
       <div className="books-container flex flex-row justify-start items-center flex-wrap gap-y-3 gap-x-4 my-4 w-[100%]">
         {list &&
-          list.books &&
-          list.books.map((book) => (
+          list.books.items &&
+          list.books.items.map((book) => (
             <div key={book.bookId} className="flex flex-col">
               <Book
                 id={book.bookId}
