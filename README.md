@@ -16,5 +16,7 @@ A react app that uses the Google Books API to search for any book and allows use
 
 
 **Login**
-U: user3
-P: Password
+
+Username: **user3**
+
+Password: **Password**
