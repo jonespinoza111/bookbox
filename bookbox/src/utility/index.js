@@ -54,14 +54,14 @@ export async function getLists() {
 
   const query = `
   query GetListsByUserId($userId: String) {
-    listLists(filter: {userId: {eq: $userId} }) {
+    listLists(filter: {userId: {eq: $userId}, _deleted: {ne: true} }) {
       items {
         createdAt
         description
         name
         id
         userId
-        books {
+        books (filter: {_deleted: {ne: true}}) {
           items {
             authors
             bookId
@@ -72,6 +72,7 @@ export async function getLists() {
             owner
             title
             thumbnail
+            _deleted
           }
         }
       }
@@ -110,7 +111,7 @@ export async function addBookToList(listId, bookInfo) {
     : { success: false, error: `Could not add book to ${existingList.name}` };
 }
 
-export async function removeBookFromList(listId, bookIdsToRemove, cb) {
+export async function removeBookFromList(listId, bookIdsToRemove) {
   let booksToRemove = await DataStore.query(Book, (b) =>
     b.listBooksId.eq(listId)
   );
@@ -121,8 +122,6 @@ export async function removeBookFromList(listId, bookIdsToRemove, cb) {
   const booksDeleted = await Promise.all(
     booksToRemove.map((book) => DataStore.delete(book))
   );
-
-  cb();
 
   return booksDeleted
     ? {
@@ -176,8 +175,28 @@ export async function getReviews(bookId) {
   const reviews = await DataStore.query(Review, (review) =>
     review.bookId.eq(bookId)
   );
+
+  const query = `
+  query GetReviewsByUserId($bookId: String) {
+    listReviews(filter: {bookId: {eq: $bookId}, _deleted: {ne: true} }) {
+      items {
+        author
+        createdAt
+        content
+        bookId
+        id
+        rating
+        title
+        username
+        updatedAt
+      }
+    }
+  }`
+
+  let results = await API.graphql(graphqlOperation(query, { bookId }))
+  results = results.data.listReviews.items;
   
-  return reviews.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  return results.sort((a, b) => b.createdAt.localeCompare(a.createdAt)) || reviews.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
 export async function getReviewsFromUserId(userId) {
@@ -187,7 +206,7 @@ export async function getReviewsFromUserId(userId) {
 
   const query = `
   query GetReviewsByUserId($userId: String) {
-    listReviews(filter: {author: {eq: $userId} }) {
+    listReviews(filter: {author: {eq: $userId}, _deleted: {ne: true} }) {
       items {
         author
         createdAt

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Book from "../components/Book";
 import { useState } from "react";
 import { removeBookFromList } from "../utility";
@@ -8,6 +8,8 @@ import { openToastifyMessage } from "../components/ToastifyMessage";
 const ViewList = () => {
   const { id } = useParams();
   const { lists, handleGetLists } = useUserContext();
+
+  const navigate = useNavigate();
 
   const list = lists && lists.find((l) => l.id === id);
 
@@ -29,12 +31,12 @@ const ViewList = () => {
   const handleRemoveFromList = async () => {
     const removedBooks = await removeBookFromList(
       list.id,
-      selectedBooks,
-      handleGetLists
+      selectedBooks
     );
 
     if (removedBooks.success) {
       openToastifyMessage("success", removedBooks.message);
+      setTimeout(handleGetLists, 1000);
     } else if (!removedBooks.success) {
       openToastifyMessage("error", removedBooks.error);
     }
@@ -67,7 +69,7 @@ const ViewList = () => {
               )}
             </div>
           ))}
-        {list && list.books && list.books.length < 1 && (
+        {list && list.books.items && list.books.items.length < 1 && (
           <div className="w-[100%] flex justify-start items-center">
             <p className="text-white">This list is very empty!</p>
           </div>
