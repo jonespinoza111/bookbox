@@ -37,7 +37,7 @@ const ReviewForm = ({ bookId, fetchReviews }) => {
       comments: "",
     });
 
-    fetchReviews();
+    setTimeout(fetchReviews, 500);
   };
 
   return (

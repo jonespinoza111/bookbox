@@ -8,9 +8,10 @@ const CreateListForm = ({ updateLists }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const list = await createList(name, description, updateLists);
+    const list = await createList(name, description);
     if (list.success) {
       openToastifyMessage("success", list.message);
+      setTimeout(updateLists, 500);
     } else if (!list.success) {
       openToastifyMessage("error", list.error);
     }

@@ -63,7 +63,7 @@ const BookDetails = () => {
     }
   };
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container px-10 py-8">
       {isLoading && (
         <div className="flex justify-center items-center">
           <FaSpinner className="animate-spin mr-2" />

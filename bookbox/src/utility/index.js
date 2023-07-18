@@ -21,7 +21,7 @@ export const Links = {
 
 ///List Functions
 
-export async function createList(name, description, cb) {
+export async function createList(name, description) {
   const user = await Auth.currentAuthenticatedUser();
   const newList = await DataStore.save(
     new List({
@@ -32,7 +32,6 @@ export async function createList(name, description, cb) {
     })
   );
 
-  cb();
   return newList
     ? { newList, success: true, message: "List created!" }
     : { success: false, error: "Could not create list." };
@@ -177,7 +176,7 @@ export async function getReviews(bookId) {
   );
 
   const query = `
-  query GetReviewsByUserId($bookId: String) {
+  query GetReviewsByBookId($bookId: String) {
     listReviews(filter: {bookId: {eq: $bookId}, _deleted: {ne: true} }) {
       items {
         author
@@ -195,6 +194,8 @@ export async function getReviews(bookId) {
 
   let results = await API.graphql(graphqlOperation(query, { bookId }))
   results = results.data.listReviews.items;
+
+  console.log('all the reviews here for a bookid: ', results);
   
   return results.sort((a, b) => b.createdAt.localeCompare(a.createdAt)) || reviews.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }

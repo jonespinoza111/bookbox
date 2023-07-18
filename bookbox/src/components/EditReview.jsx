@@ -43,7 +43,8 @@ const EditReview = ({ review, cancel }) => {
 
     if (newReview.success) {
       openToastifyMessage("success", newReview.message);
-      handleGetReviews();
+      setTimeout(handleGetReviews, 500);
+      // handleGetReviews();
     } else if (!newReview.success) {
       openToastifyMessage("error", newReview.error);
     }

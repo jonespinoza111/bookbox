@@ -1,4 +1,7 @@
-type Book @model @auth(rules: [{ allow: owner }]) {
+type Book @model @auth(rules: [
+  { allow: owner, operations: [create, read, delete, update] }
+  { allow: private, operations: [read] }
+]) {
   bookId: String!
   title: String!
   authors: [String]
@@ -8,7 +11,10 @@ type Book @model @auth(rules: [{ allow: owner }]) {
   listBooksId: String
 }
 
-type List @model @auth(rules: [{ allow: owner }]) {
+type List @model @auth(rules: [
+  { allow: owner, operations: [create, read, delete, update] }
+  { allow: private, operations: [read] }
+]) {
   id: ID!
   name: String!
   description: String!
@@ -16,7 +22,10 @@ type List @model @auth(rules: [{ allow: owner }]) {
   books: [Book]! @hasMany
 }
 
-type Review @model @auth(rules: [{ allow: owner }]) {
+type Review @model @auth(rules: [
+  { allow: owner, operations: [create, read, delete, update] }
+  { allow: private, operations: [read] }
+]) {
   id: ID!
   username: String!
   title: String!
